@@ -36,5 +36,25 @@ void Arista<V, A>::setVDestino(Vertice<V, A> *vDestino) {
     Arista::vDestino = vDestino;
 }
 
+template<class V, class A>
+Arista<V, A>::Arista(A peso):peso(peso) {}
+
+template<class V, class A>
+Arista<V, A>::Arista(Vertice<V, A> *vDestino):vDestino(vDestino) {}
+
+template<class V, class A>
+Arista<V, A>::Arista(A peso, Vertice<V, A> *vDestino):peso(peso), vDestino(vDestino) {}
+
+template<class V, class A>
+std::ostream &operator<<(std::ostream &os, const Arista<A, V> &arista) {
+    if(arista.peso != NULL){
+        os << arista.vDestino->valor << " -> Peso: " << arista.peso;
+    }
+    else{
+        os << arista.vDestino->valor;
+    }
+    return os;
+}
+
 
 #endif //TEORIA_DE_GRAFOS_ARISTA_HXX
