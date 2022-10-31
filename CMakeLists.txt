@@ -4,4 +4,4 @@ project(Teoria_De_Grafos)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(Teoria_De_Grafos
-        main.cpp)
+        main.cpp Vertice.h Arista.h Vertice.hxx Arista.hxx)
