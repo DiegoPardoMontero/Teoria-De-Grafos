@@ -5,6 +5,7 @@
 #ifndef TEORIA_DE_GRAFOS_GRAFO_HXX
 #define TEORIA_DE_GRAFOS_GRAFO_HXX
 #include "Grafo.h"
+#include "Vertice.hxx"
 #include <iostream>
 
 //CONSTRUCTORES:
@@ -84,7 +85,7 @@ template<class V, class A>
 bool Grafo<V, A>::agregarVertice(V valor){
     bool existe = verificarExistencia(valor);
     if(!existe){
-        Vertice<V, A> nuevoVertice(valor, NULL);
+        auto* nuevoVertice = new Vertice<V, A>(valor);
         this->vertices.push_back(nuevoVertice);
         std::cout << "El vertice se ha agregado exitosamente!" << std::endl;
         return true;
@@ -97,7 +98,7 @@ bool Grafo<V, A>::agregarVertice(V valor){
 
 template<class V, class A>
 bool Grafo<V, A>::esVacio(){
-    if(vertices == NULL) {
+    if(vertices.empty()) {
         return true;
     }
     return false;
@@ -110,11 +111,78 @@ void Grafo<V, A>::imprimirGrafo(){
         return;
     } else{
         for (int i = 0; i < this->vertices.size(); i++){
-            std::cout << vertices[i] << std::endl;
+            std::cout << "Vertice " << vertices[i]->getValor() << ":" << std::endl << std::endl;
+            if (vertices[i]->getAristas().empty()){
+                std::cout << "\tEste vertice no tiene aristas" << std::endl << std::endl;
+            }else{
+                std::cout << "\tAristas: " << std::endl;
+                for(int j = 0; j < vertices[i]->getAristas().size(); j++){
+                    std::cout << "\t - "
+                              << vertices[i]->getValor()
+                              << " -> "
+                              << vertices[vertices[i]->getAristas()[j]->getIndvDestino()]->getValor()
+                              << " Peso: "
+                              << vertices[i]->getAristas()[j]->getPeso() << std::endl;
+                }
+            }
+            std::cout << std::endl;
         }
     }
 }
 
+template<class V, class A>
+bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino) {
+    bool existenciaOrigen = false, existenciaDestino = false;
+    existenciaOrigen = verificarExistencia(valorOrigen);
+    existenciaDestino = verificarExistencia(valorDestino);
+    if (existenciaOrigen && existenciaDestino) {
+        int indOrigen, indDestino;
+        for(int i = 0; i < this->vertices.size(); i++){
+            if(valorOrigen == vertices[i]->getValor()){
+                indOrigen = i;
+            }
+            if(valorDestino == vertices[i]->getValor()){
+                indDestino = i;
+            }
+        }
+        if (dirigido) {
+            vertices[indOrigen].agregarAristaEnVertice(indDestino);
+        } else {
+            vertices[indOrigen].agregarAristaEnVertice(indDestino);
+            vertices[indDestino].agregarAristaEnVertice(indOrigen);
+        }
+
+    } else {
+        std::cout << "Vertices invalidos!" << std::endl;
+    }
+}
+
+template<class V, class A>
+bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino, A peso) {
+    bool existenciaOrigen = false, existenciaDestino = false;
+    existenciaOrigen = verificarExistencia(valorOrigen);
+    existenciaDestino = verificarExistencia(valorDestino);
+    if (existenciaOrigen && existenciaDestino) {
+        int indOrigen, indDestino;
+        for(int i = 0; i < this->vertices.size(); i++){
+            if(valorOrigen == vertices[i]->getValor()){
+                indOrigen = i;
+            }
+            if(valorDestino == vertices[i]->getValor()){
+                indDestino = i;
+            }
+        }
+        if (dirigido) {
+            vertices[indOrigen]->agregarAristaEnVertice(indDestino, peso);
+        } else {
+            vertices[indOrigen]->agregarAristaEnVertice(indDestino, peso);
+            vertices[indDestino]->agregarAristaEnVertice(indOrigen, peso);
+        }
+
+    } else {
+        std::cout << "Vertices invalidos!" << std::endl;
+    }
+}
 
 
 #endif //TEORIA_DE_GRAFOS_GRAFO_HXX

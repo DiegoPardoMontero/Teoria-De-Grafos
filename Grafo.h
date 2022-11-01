@@ -54,4 +54,5 @@ public:
     void imprimirGrafo();
 };
 
+#include "Grafo.hxx"
 #endif //TEORIA_DE_GRAFOS_GRAFO_H
