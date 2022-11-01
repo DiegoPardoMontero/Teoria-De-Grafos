@@ -43,7 +43,7 @@ template<class V, class A>
 Vertice<V, A>::Vertice(V valor, const std::vector<Arista<A> *> &aristas):valor(valor), aristas(aristas) {}
 
 template<class V, class A>
-const std::vector<Arista<A> *> &Vertice<V, A>::getAristas() const {
+std::vector<Arista<A> *> &Vertice<V, A>::getAristas(){
     return aristas;
 }
 

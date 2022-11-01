@@ -26,7 +26,7 @@ public:
 
     void setValor(V valor);
 
-    const std::vector<Arista<A> *> &getAristas() const;
+    std::vector<Arista<A> *> &getAristas();
 
     void setAristas(const std::vector<Arista<A> *> &aristas);
 

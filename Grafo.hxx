@@ -146,10 +146,10 @@ bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino) {
             }
         }
         if (dirigido) {
-            vertices[indOrigen].agregarAristaEnVertice(indDestino);
+            vertices[indOrigen]->agregarAristaEnVertice(indDestino);
         } else {
-            vertices[indOrigen].agregarAristaEnVertice(indDestino);
-            vertices[indDestino].agregarAristaEnVertice(indOrigen);
+            vertices[indOrigen]->agregarAristaEnVertice(indDestino);
+            vertices[indDestino]->agregarAristaEnVertice(indOrigen);
         }
 
     } else {
