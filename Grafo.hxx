@@ -13,10 +13,9 @@ template<class V, class A>
 Grafo<V, A>::Grafo() {
 
 }
-template<class V, class A>
-Grafo<V, A>::~Grafo() {
 
-}
+template<class V, class A>
+Grafo<V, A>::~Grafo() = default;
 
 template<class V, class A>
 Grafo<V, A>::Grafo(bool dirigido):dirigido(dirigido) {}
@@ -120,7 +119,7 @@ void Grafo<V, A>::imprimirGrafo(){
                     std::cout << "\t - "
                               << vertices[i]->getValor()
                               << " -> "
-                              << vertices[vertices[i]->getAristas()[j]->getIndvDestino()]->getValor()
+                              << vertices[i]->getAristas()[j]->getValorVerticeDestino()
                               << " Peso: "
                               << vertices[i]->getAristas()[j]->getPeso() << std::endl;
                 }
@@ -132,24 +131,18 @@ void Grafo<V, A>::imprimirGrafo(){
 
 template<class V, class A>
 bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino) {
-    bool existenciaOrigen = false, existenciaDestino = false;
+    bool existenciaOrigen;
+    bool existenciaDestino;
     existenciaOrigen = verificarExistencia(valorOrigen);
     existenciaDestino = verificarExistencia(valorDestino);
     if (existenciaOrigen && existenciaDestino) {
-        int indOrigen, indDestino;
         for(int i = 0; i < this->vertices.size(); i++){
             if(valorOrigen == vertices[i]->getValor()){
-                indOrigen = i;
+                vertices[i]->agregarAristaEnVertice(valorDestino);
             }
-            if(valorDestino == vertices[i]->getValor()){
-                indDestino = i;
+            if(valorDestino == vertices[i]->getValor() && !dirigido){
+                vertices[i]->agregarAristaEnVertice(valorOrigen);
             }
-        }
-        if (dirigido) {
-            vertices[indOrigen]->agregarAristaEnVertice(indDestino);
-        } else {
-            vertices[indOrigen]->agregarAristaEnVertice(indDestino);
-            vertices[indDestino]->agregarAristaEnVertice(indOrigen);
         }
 
     } else {
@@ -159,24 +152,18 @@ bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino) {
 
 template<class V, class A>
 bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino, A peso) {
-    bool existenciaOrigen = false, existenciaDestino = false;
+    bool existenciaOrigen;
+    bool existenciaDestino;
     existenciaOrigen = verificarExistencia(valorOrigen);
     existenciaDestino = verificarExistencia(valorDestino);
     if (existenciaOrigen && existenciaDestino) {
-        int indOrigen, indDestino;
         for(int i = 0; i < this->vertices.size(); i++){
             if(valorOrigen == vertices[i]->getValor()){
-                indOrigen = i;
+                vertices[i]->agregarAristaEnVertice(valorDestino, peso);
             }
-            if(valorDestino == vertices[i]->getValor()){
-                indDestino = i;
+            if(valorDestino == vertices[i]->getValor() && !dirigido){
+                vertices[i]->agregarAristaEnVertice(valorOrigen, peso);
             }
-        }
-        if (dirigido) {
-            vertices[indOrigen]->agregarAristaEnVertice(indDestino, peso);
-        } else {
-            vertices[indOrigen]->agregarAristaEnVertice(indDestino, peso);
-            vertices[indDestino]->agregarAristaEnVertice(indOrigen, peso);
         }
 
     } else {
@@ -184,5 +171,111 @@ bool Grafo<V, A>::agregarArista(V valorOrigen, V valorDestino, A peso) {
     }
 }
 
+template<class V, class A>
+bool Grafo<V, A>::eliminarArista(V valorOrigen, V valorDestino){
+    bool existenciaOrigen;
+    bool existenciaDestino;
+    existenciaOrigen = verificarExistencia(valorOrigen);
+    existenciaDestino = verificarExistencia(valorDestino);
+    if(existenciaOrigen && existenciaDestino){
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertices[i]->getValor() == valorOrigen){
+                for (auto itA = this->vertices[i]->getAristas().begin(); itA != this->vertices[i]->getAristas().end(); itA++){
+                    if((*itA)->getValorVerticeDestino() == valorDestino){
+                        vertices[i]->getAristas().erase(itA);
+                        break;
+                    }
+                }
+            }
+            if(vertices[i]->getValor() == valorDestino){
+                if(!dirigido){
+                    for (auto itA = this->vertices[i]->getAristas().begin(); itA != this->vertices[i]->getAristas().end(); itA++){
+                        if((*itA)->getValorVerticeDestino() == valorOrigen){
+                            vertices[i]->getAristas().erase(itA);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        std::cout << "La arista se ha eliminado exitosamente!" << std::endl;
+    }else{
+        std::cout << "Vertices invalidos!" << std::endl;
+    }
+}
+
+template<class V, class A>
+bool Grafo<V, A>::actualizarVertice(V elViejo, V elNuevo) {
+    bool existe = verificarExistencia(elViejo);
+    int i=0;
+    if(existe) {
+        for(int i = 0; i < vertices.size(); i++){
+            for (auto itA = this->vertices[i]->getAristas().begin(); itA != this->vertices[i]->getAristas().end(); itA++){
+                if((*itA)->getValorVerticeDestino() == elViejo){
+                    (*itA)->setValorVerticeDestino(elNuevo);
+                    break;
+                }
+            }
+        }
+
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertices[i]->getValor() == elViejo){
+                vertices[i]->setValor(elNuevo);
+            }
+        }
+
+        std::cout << "El vertice se ha actualizado exitosamente!" << std::endl;
+        return true;
+    }
+    else{
+        std::cout << "El vertice no existe!" << std::endl;
+        return false;
+    }
+}
+
+template<class V, class A>
+bool Grafo<V, A>::actualizarArista(V valorOrigen, V valorDestino, A peso) {
+    bool existenciaOrigen;
+    bool existenciaDestino;
+    existenciaOrigen = verificarExistencia(valorOrigen);
+    existenciaDestino = verificarExistencia(valorDestino);
+    if(existenciaOrigen && existenciaDestino){
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertices[i]->getValor() == valorOrigen){
+                for (auto itA = this->vertices[i]->getAristas().begin(); itA != this->vertices[i]->getAristas().end(); itA++){
+                    if((*itA)->getValorVerticeDestino() == valorDestino){
+                        (*itA)->setPeso(peso);
+                        break;
+                    }
+                }
+            }
+            if(vertices[i]->getValor() == valorDestino){
+                if(!dirigido){
+                    for (auto itA = this->vertices[i]->getAristas().begin(); itA != this->vertices[i]->getAristas().end(); itA++){
+                        if((*itA)->getValorVerticeDestino() == valorOrigen){
+                            (*itA)->setPeso(peso);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        std::cout << "La arista se ha actualizado exitosamente!" << std::endl;
+    }else{
+        std::cout << "Vertices invalidos!" << std::endl;
+    }
+}
+
+template<class V, class A>
+void Grafo<V, A>::imprimirVecinos(V verticeImprimir) {
+    for(int i = 0; i < vertices.size(); i++){
+        if(vertices[i]->getValor() == verticeImprimir){
+            std::cout << "Vecinos encontrados: " << std::endl;
+            for(int j = 0; j < vertices[i]->getAristas().size(); j++){
+                std::cout << "- " << vertices[i]->getAristas()[j]->getValorVerticeDestino() << std::endl;
+            }
+        }
+    }
+}
 
 #endif //TEORIA_DE_GRAFOS_GRAFO_HXX

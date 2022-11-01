@@ -2,7 +2,7 @@
 #define TEORIA_DE_GRAFOS_ARISTA_H
 #include <ostream>
 
-template <class A>
+template <class A, class V>
 class Arista{
 private:
     A peso;
@@ -11,24 +11,25 @@ public:
     //CONSTRUCTORES:
     Arista();
 
-    explicit Arista(int indvDestino);
+    ~Arista();
 
-    Arista(A peso, int indvDestino);
+    explicit Arista(V valorVerticeDestino);
+
+    Arista(A peso, V valorVerticeDestino);
 
     //GETTERS Y SETTERS:
+
+    V getValorVerticeDestino() const;
+
+    void setValorVerticeDestino(V valorVerticeDestino);
 
     A getPeso() const;
 
     void setPeso(A peso);
 
-    int getIndvDestino() const;
-
-    void setIndvDestino(int indvDestino);
-
-    //MÉTODOS REALES:
-    friend std::ostream &operator<<(std::ostream &os, const Arista &arista);
-
 };
+
+
 
 
 #include "Arista.hxx"

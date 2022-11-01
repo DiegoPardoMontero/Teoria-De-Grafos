@@ -8,16 +8,16 @@ template <class V, class A>
 class Vertice{
 private:
     V valor;
-    std::vector<Arista<A>*> aristas;
+    std::vector<Arista<A, V>*> aristas;
 public:
     //CONSTRUCTORES:
     Vertice();
 
     explicit Vertice(V valor);
 
-    explicit Vertice(const std::vector<Arista<A> *> &aristas);
+    explicit Vertice(const std::vector<Arista<A, V> *> &aristas);
 
-    Vertice(V valor, const std::vector<Arista<A> *> &aristas);
+    Vertice(V valor, const std::vector<Arista<A, V> *> &aristas);
 
     ~Vertice();
 
@@ -26,17 +26,17 @@ public:
 
     void setValor(V valor);
 
-    std::vector<Arista<A> *> &getAristas();
+    std::vector<Arista<A, V> *> &getAristas();
 
-    void setAristas(const std::vector<Arista<A> *> &aristas);
+    void setAristas(const std::vector<Arista<A, V> *> &aristas);
 
     //MÉTODOS REALES
 
     friend std::ostream &operator<<(std::ostream &os, const Vertice<V, A> &vertice);
 
-    void agregarAristaEnVertice(int indAgregar);
+    void agregarAristaEnVertice(V valor);
 
-    void agregarAristaEnVertice(int indAgregar, A peso);
+    void agregarAristaEnVertice(V valor, A peso);
 };
 
 

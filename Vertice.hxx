@@ -7,14 +7,10 @@
 #include "Vertice.h"
 
 template<class V, class A>
-Vertice<V, A>::Vertice() {
-
-}
+Vertice<V, A>::Vertice() = default;
 
 template<class V, class A>
-Vertice<V, A>::~Vertice() {
-
-}
+Vertice<V, A>::~Vertice() = default;
 
 template<class V, class A>
 V Vertice<V, A>::getValor() const {
@@ -37,30 +33,30 @@ std::ostream &operator<<(std::ostream &os, const Vertice<V, A> &vertice) {
 }
 
 template<class V, class A>
-Vertice<V, A>::Vertice(const std::vector<Arista<A> *> &aristas):aristas(aristas) {}
+Vertice<V, A>::Vertice(const std::vector<Arista<A, V> *> &aristas):aristas(aristas) {}
 
 template<class V, class A>
-Vertice<V, A>::Vertice(V valor, const std::vector<Arista<A> *> &aristas):valor(valor), aristas(aristas) {}
+Vertice<V, A>::Vertice(V valor, const std::vector<Arista<A, V> *> &aristas):valor(valor), aristas(aristas) {}
 
 template<class V, class A>
-std::vector<Arista<A> *> &Vertice<V, A>::getAristas(){
+std::vector<Arista<A, V> *> &Vertice<V, A>::getAristas(){
     return aristas;
 }
 
 template<class V, class A>
-void Vertice<V, A>::setAristas(const std::vector<Arista<A> *> &aristas) {
+void Vertice<V, A>::setAristas(const std::vector<Arista<A, V> *> &aristas) {
     Vertice::aristas = aristas;
 }
 
 template<class V, class A>
-void Vertice<V, A>::agregarAristaEnVertice(int indAgregar) {
-    auto* aristaAgregar = new Arista<A>(indAgregar);
+void Vertice<V, A>::agregarAristaEnVertice(V valor) {
+    auto* aristaAgregar = new Arista<A, V>(valor);
     this->aristas.push_back(aristaAgregar);
 }
 
 template<class V, class A>
-void Vertice<V, A>::agregarAristaEnVertice(int indAgregar, A peso) {
-    auto* aristaAgregar = new Arista<A>(peso, indAgregar);
+void Vertice<V, A>::agregarAristaEnVertice(V valor, A peso) {
+    auto* aristaAgregar = new Arista<A, V>(peso, valor);
     this->aristas.push_back(aristaAgregar);
 }
 

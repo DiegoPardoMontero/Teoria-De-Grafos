@@ -6,8 +6,11 @@
 #define TEORIA_DE_GRAFOS_ARISTA_HXX
 #include "Arista.h"
 
-template<class A>
-Arista<A>::Arista() = default;
+template<class A, class V>
+Arista<A, V>::Arista() = default;
+
+template<class A, class V>
+Arista<A, V>::~Arista() = default;
 
 template<class A>
 Arista<A>::Arista(int indvDestino):indvDestino(indvDestino) {}
@@ -15,30 +18,24 @@ Arista<A>::Arista(int indvDestino):indvDestino(indvDestino) {}
 template<class A>
 Arista<A>::Arista(A peso, int indvDestino):peso(peso), indvDestino(indvDestino) {}
 
-template<class A>
-A Arista<A>::getPeso() const {
+template<class A, class V>
+A Arista<A, V>::getPeso() const {
     return peso;
 }
 
-template<class A>
-void Arista<A>::setPeso(A peso) {
+template<class A, class V>
+void Arista<A, V>::setPeso(A peso) {
     Arista::peso = peso;
 }
 
-template<class A>
-int Arista<A>::getIndvDestino() const {
-    return indvDestino;
+template<class A, class V>
+V Arista<A, V>::getValorVerticeDestino() const {
+    return valorVerticeDestino;
 }
 
-template<class A>
-void Arista<A>::setIndvDestino(int indvDestino) {
-    Arista::indvDestino = indvDestino;
-}
-
-template<class A>
-std::ostream &operator<<(std::ostream &os, const Arista<A> &arista) {
-    os << "Peso: " << arista.peso;
-    return os;
+template<class A, class V>
+void Arista<A, V>::setValorVerticeDestino(V valorVerticeDestino) {
+    Arista::valorVerticeDestino = valorVerticeDestino;
 }
 
 

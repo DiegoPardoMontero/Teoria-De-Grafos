@@ -1,7 +1,5 @@
 #include <iostream>
 #include "Grafo.h"
-#include <list>
-
 using namespace std;
 
 Grafo<char, int> opcionCrearGrafo();
@@ -21,7 +19,6 @@ void opcionActualizarVertice(Grafo<char, int>& grafo);
 void opcionActualizarArista(Grafo<char, int>& grafo);
 
 void opcionImprimirVecinos(Grafo<char, int>& grafo);
-
 
 int main() {
     int opcion;
@@ -46,6 +43,7 @@ int main() {
         cout << "9. Imprimir todos los vecinos de un vertice" << endl;
         cout << "10. Salir" << endl;
         cin  >> opcion ;
+
 
         switch (opcion) {
             case 1:
@@ -100,7 +98,6 @@ int main() {
 Grafo<char, int> opcionCrearGrafo(){
     char dirigido;
     char ponderado;
-
     cout<<"=========================CREAR GRAFO=========================="<<endl;
 
     cout << "Grafo dirigido? s o n" << endl;
@@ -180,18 +177,44 @@ void opcionEliminarArista(Grafo<char, int>& grafo){
 
     cout<<"Ingrese el vertice de destino a eliminar: "<<endl;
     cin>>verticeDestino;
+
+    grafo.eliminarArista(verticeOrigen, verticeDestino);
 }
 
 void opcionActualizarVertice(Grafo<char, int>& grafo){
     cout<<"=========================ACTUALIZAR VERTICE=========================="<<endl;
+    char verticeOrigen, verticeDestino;
+    cout<<"Ingrese el vertice a actualizar: "<<endl;
+    cin>>verticeOrigen;
+
+    cout<<"Ingrese el valor del nuevo vertice: "<<endl;
+    cin>>verticeDestino;
+
+    grafo.actualizarVertice(verticeOrigen, verticeDestino);
 }
 
 void opcionActualizarArista(Grafo<char, int>& grafo){
     cout<<"=========================ACTUALIZAR ARISTA=========================="<<endl;
+    char verticeOrigen, verticeDestino;
+    int pesoActualizar;
+    cout<<"Ingrese el vertice origen de la arista: "<<endl;
+    cin>>verticeOrigen;
+
+    cout<<"Ingrese el vertice destino de la arista: "<<endl;
+    cin>>verticeDestino;
+
+    cout<<"Ingrese el valor del nuevo peso: " << endl;
+    cin >> pesoActualizar;
+
+    grafo.actualizarArista(verticeOrigen, verticeDestino, pesoActualizar);
 }
 
 void opcionImprimirVecinos(Grafo<char, int>& grafo){
     cout<<"=========================IMPRIMIR VECINOS DE UN VERTICE=========================="<<endl;
+    char verticeImprimir;
+    cout << "Ingrese el vertice del cual desea conocer sus vecinos:" << endl;
+    cin >> verticeImprimir;
+    grafo.imprimirVecinos(verticeImprimir);
 }
 
 

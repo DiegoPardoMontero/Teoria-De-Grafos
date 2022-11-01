@@ -1,7 +1,3 @@
-//
-// Created by diego on 30/10/2022.
-//
-
 #ifndef TEORIA_DE_GRAFOS_GRAFO_H
 #define TEORIA_DE_GRAFOS_GRAFO_H
 #include "Vertice.h"
