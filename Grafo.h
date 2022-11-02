@@ -2,6 +2,7 @@
 #define TEORIA_DE_GRAFOS_GRAFO_H
 #include "Vertice.h"
 #include <vector>
+#include <stack>
 
 template <class V, class A>
 class Grafo{
@@ -48,6 +49,10 @@ public:
     bool esVacio();
 
     void imprimirGrafo();
+
+    std::vector<Vertice<V, A>> DijkstraCaminoUnico(V valorInicial, V valorDestino);
+
+    std::vector<std::stack<Vertice<V, A> > > DijkstraTodosLosCaminos(V valorInicial);
 };
 
 #include "Grafo.hxx"

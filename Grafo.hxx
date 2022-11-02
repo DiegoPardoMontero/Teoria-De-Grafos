@@ -7,6 +7,8 @@
 #include "Grafo.h"
 #include "Vertice.hxx"
 #include <iostream>
+#include <queue>
+#define INFINITO 10000000
 
 //CONSTRUCTORES:
 template<class V, class A>
@@ -52,8 +54,7 @@ void Grafo<V, A>::setDirigido(bool dirigido) {
 
 template<class V, class A>
 Grafo<V, A>::Grafo(const std::vector<Vertice<V, A> *> &vertices, bool dirigido, bool ponderado):vertices(vertices),
-                                                                                                dirigido(dirigido),
-                                                                                                ponderado(ponderado) {}
+                                                                                                dirigido(dirigido),ponderado(ponderado) {}
 
 template<class V, class A>
 Grafo<V, A>::Grafo(bool dirigido, bool ponderado):dirigido(dirigido), ponderado(ponderado) {}
@@ -276,6 +277,30 @@ void Grafo<V, A>::imprimirVecinos(V verticeImprimir) {
             }
         }
     }
+}
+
+template<class V, class A>
+std::vector<Vertice<V, A>> Grafo<V, A>::DijkstraCaminoUnico(V valorInicial, V valorDestino) {
+    std::vector<A> distancias;
+
+    distancias[0] = 0;
+
+    for(int i = 1; i < vertices.size(); i++){
+        distancias[i].push_back(INFINITO);
+    }
+
+    std::vector<Vertice<V, A> > verticesVisitados;
+    std::priority_queue<Vertice<V, A> > verticesSinVisitar = vertices;
+
+    return std::vector<Vertice<V, A>>();
+}
+
+template<class V, class A>
+std::vector<std::stack<Vertice<V, A>>> Grafo<V, A>::DijkstraTodosLosCaminos(V valorInicial) {
+
+
+
+    return std::vector<std::stack<Vertice<V, A>>>();
 }
 
 #endif //TEORIA_DE_GRAFOS_GRAFO_HXX
