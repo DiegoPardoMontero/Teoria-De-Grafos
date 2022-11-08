@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Grafo.h"
+#include "Vertice.h"
 using namespace std;
 
 Grafo<char, int> opcionCrearGrafo();
@@ -19,6 +20,10 @@ void opcionActualizarVertice(Grafo<char, int>& grafo);
 void opcionActualizarArista(Grafo<char, int>& grafo);
 
 void opcionImprimirVecinos(Grafo<char, int>& grafo);
+
+void opcionAlgoritmoDijkstra(Grafo<char, int>& grafo);
+
+void opcionRutaEntreDosVertices(Grafo<char, int>& grafo);
 
 int main() {
     int opcion;
@@ -41,9 +46,10 @@ int main() {
         cout << "7. Actualizar vertice" << endl;
         cout << "8. Actualizar arista" << endl;
         cout << "9. Imprimir todos los vecinos de un vertice" << endl;
-        cout << "10. Salir" << endl;
+        cout << "10. Algoritmo de Dijkstra" << endl;
+        cout << "11. Ruta entre dos vertices" << endl;
+        cout << "12. Salir" << endl;
         cin  >> opcion ;
-
 
         switch (opcion) {
             case 1:
@@ -79,6 +85,14 @@ int main() {
             }
             case 9:{
                 opcionImprimirVecinos(grafo);
+                break;
+            }
+            case 10:{
+                opcionAlgoritmoDijkstra(grafo);
+                break;
+            }
+            case 11:{
+                opcionRutaEntreDosVertices(grafo);
                 break;
             }
             default: {
@@ -217,4 +231,29 @@ void opcionImprimirVecinos(Grafo<char, int>& grafo){
     grafo.imprimirVecinos(verticeImprimir);
 }
 
+void opcionAlgoritmoDijkstra(Grafo<char, int>& grafo) {
+    cout << "=========================ALGORITMO DE DIJKSTRA==========================" << endl;
+    grafo.DijkstraTodosLosCaminos('S');
+    cout << "Finalizado!" << endl;
+    cout << endl;
+}
 
+void opcionRutaEntreDosVertices(Grafo<char, int>& grafo){
+    cout<<"=========================RUTA ENTRE DOS VERTICES=========================="<<endl << endl;
+    char verticeInicial, verticeFinal;
+    cout << "Ingrese el vertice inicial: " << endl;
+    cin >> verticeInicial;
+    cout << "Ingrese el vertice final: " << endl;
+    cin >> verticeFinal;
+    std::stack<Vertice<char, int>*> ruta = grafo.DijkstraCaminoEntreDosNodos(verticeInicial, verticeFinal);
+    cout<<"=========================RUTA ENCONTRADA=========================="<<endl << endl;
+    while(!ruta.empty()){
+        if(ruta.top()->getValor() == verticeFinal){
+            cout << ruta.top()->getValor();
+        }
+        else{
+            cout << ruta.top()->getValor() << " -> ";
+        }
+        ruta.pop();
+    }
+}

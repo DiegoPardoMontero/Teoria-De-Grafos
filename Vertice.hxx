@@ -60,4 +60,35 @@ void Vertice<V, A>::agregarAristaEnVertice(V valor, A peso) {
     this->aristas.push_back(aristaAgregar);
 }
 
+template<class V, class A>
+A Vertice<V, A>::getDistancia() const {
+    return distancia;
+}
+
+template<class V, class A>
+void Vertice<V, A>::setDistancia(A distancia) {
+    Vertice::distancia = distancia;
+}
+
+template<class V, class A>
+Vertice<V, A> *Vertice<V, A>::getPredecesor() const {
+    return predecesor;
+}
+
+template<class V, class A>
+void Vertice<V, A>::setPredecesor(Vertice<V, A> *predecesor) {
+    Vertice::predecesor = predecesor;
+}
+
+template<class V, class A>
+bool Vertice<V, A>::isVisitado() const {
+    return visitado;
+}
+
+template<class V, class A>
+void Vertice<V, A>::setVisitado(bool visitado) {
+    Vertice::visitado = visitado;
+}
+
+
 #endif //TEORIA_DE_GRAFOS_VERTICE_HXX

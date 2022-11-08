@@ -50,9 +50,9 @@ public:
 
     void imprimirGrafo();
 
-    std::vector<Vertice<V, A>> DijkstraCaminoUnico(V valorInicial, V valorDestino);
+    std::stack<Vertice<V, A>*> DijkstraCaminoEntreDosNodos(V valorInicial, V valorDestino);
 
-    std::vector<std::stack<Vertice<V, A> > > DijkstraTodosLosCaminos(V valorInicial);
+    void DijkstraTodosLosCaminos(V valorInicial);
 };
 
 #include "Grafo.hxx"

@@ -4,11 +4,11 @@
 
 #ifndef TEORIA_DE_GRAFOS_GRAFO_HXX
 #define TEORIA_DE_GRAFOS_GRAFO_HXX
+#include <limits>
 #include "Grafo.h"
 #include "Vertice.hxx"
 #include <iostream>
 #include <queue>
-#define INFINITO 10000000
 
 //CONSTRUCTORES:
 template<class V, class A>
@@ -280,27 +280,80 @@ void Grafo<V, A>::imprimirVecinos(V verticeImprimir) {
 }
 
 template<class V, class A>
-std::vector<Vertice<V, A>> Grafo<V, A>::DijkstraCaminoUnico(V valorInicial, V valorDestino) {
-    std::vector<A> distancias;
+std::vector<Vertice<V, A>* > Grafo<V, A>::vecinos(V verticeOrigen){
+    std::vector<V> valoresVecinos;
+    std::vector<Vertice<V, A>* > vecinos;
 
-    distancias[0] = 0;
-
-    for(int i = 1; i < vertices.size(); i++){
-        distancias[i].push_back(INFINITO);
+    for(int i = 0; i < vertices.size(); i++){
+        if(vertices[i]->getValor() == verticeOrigen){
+            for(int j = 0; j < vertices[i]->getAristas().size(); j++){
+                valoresVecinos.push_back(vertices[i]->getAristas()[j]->getValorVerticeDestino());
+            }
+        }
     }
 
-    std::vector<Vertice<V, A> > verticesVisitados;
-    std::priority_queue<Vertice<V, A> > verticesSinVisitar = vertices;
+    for(int j = 0; j < valoresVecinos.size(); j++) {
+        for(int i = 0; i < vertices.size(); i++) {
+            if (vertices[i]->getValor() == valoresVecinos[j]) {
+                vecinos.push_back(vertices[i]);
+            }
+        }
+    }
 
-    return std::vector<Vertice<V, A>>();
+    return vecinos;
 }
 
 template<class V, class A>
-std::vector<std::stack<Vertice<V, A>>> Grafo<V, A>::DijkstraTodosLosCaminos(V valorInicial) {
+std::stack<Vertice<V, A>*> Grafo<V, A>::DijkstraCaminoEntreDosNodos(V valorInicial, V valorDestino) {
+    std::stack<Vertice<V, A>*> ruta;
+    DijkstraTodosLosCaminos(valorInicial);
 
+    for(int i = 0; i < vertices.size(); i++){
+        if(vertices[i]->getValor() == valorDestino){
+            Vertice<V, A>* verticeActual = vertices[i];
+            ruta.push(verticeActual);
+            while(verticeActual->getValor() != valorInicial){
+                verticeActual = verticeActual->getPredecesor();
+                ruta.push(verticeActual);
+            }
+            return ruta;
+        }
+    }
+}
 
+template<class V, class A>
+void Grafo<V, A>::DijkstraTodosLosCaminos(V valorInicial) {
+    const A INFINITO = std::numeric_limits<float>::infinity();
 
-    return std::vector<std::stack<Vertice<V, A>>>();
+    for(int i = 0; i < vertices.size(); i++){
+        vertices[i]->setVisitado(false);
+        if(vertices[i]->getValor() == valorInicial){
+            vertices[i]->setDistancia(0);
+            vertices[i]->setPredecesor(vertices[i]);
+        }else{
+
+            vertices[i]->setDistancia(INFINITO);
+        }
+    }
+
+    for(int i = 0; i < vertices.size(); i++) {
+        Vertice<V, A> *verticeMin = new Vertice<V, A>();
+        verticeMin->setDistancia(INFINITO);
+        for (int j = 0; j < vertices.size(); j++) {
+            if (!vertices[j]->isVisitado() && vertices[j]->getDistancia() < verticeMin->getDistancia()) {
+                verticeMin = vertices[j];
+            }
+        }
+        verticeMin->setVisitado(true);
+        std::vector<Vertice<V, A> *> vecinos = this->vecinos(verticeMin->getValor());
+
+        for (int j = 0; j < vecinos.size(); j++) {
+            if (vecinos[j]->getDistancia() > (verticeMin->getDistancia() + verticeMin->getAristas()[j]->getPeso())) {
+                vecinos[j]->setDistancia(verticeMin->getDistancia() + verticeMin->getAristas()[j]->getPeso());
+                vecinos[j]->setPredecesor(verticeMin);
+            }
+        }
+    }
 }
 
 #endif //TEORIA_DE_GRAFOS_GRAFO_HXX

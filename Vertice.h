@@ -8,8 +8,12 @@ template <class V, class A>
 class Vertice{
 private:
     V valor;
+    A distancia;
+    Vertice<V, A>* predecesor;
+    bool visitado;
     std::vector<Arista<A, V>*> aristas;
 public:
+
     //CONSTRUCTORES:
     Vertice();
 
@@ -29,6 +33,19 @@ public:
     std::vector<Arista<A, V> *> &getAristas();
 
     void setAristas(const std::vector<Arista<A, V> *> &aristas);
+
+    A getDistancia() const;
+
+    void setDistancia(A distancia);
+
+    Vertice<V, A> *getPredecesor() const;
+
+    void setPredecesor(Vertice<V, A> *predecesor);
+
+    bool isVisitado() const;
+
+    void setVisitado(bool visitado);
+
 
     //MÉTODOS REALES
 
